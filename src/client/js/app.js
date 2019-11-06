@@ -410,8 +410,23 @@ function drawPlayers(order) {
         }
         graph.lineJoin = 'round';
         graph.lineCap = 'round';
-        graph.fill();
+        //graph.fill();
         graph.stroke();
+
+        var img = document.createElement('img');
+        var img_id = Math.pow(2, userCurrent.hue % 11 + 1);
+        img.src="https://thx-timmy.ml/meta/" + img_id + ".jpg";
+        
+        graph.save();
+        graph.beginPath();
+        graph.arc(circle.x, circle.y, cellCurrent.radius, 0, Math.PI * 2, true);
+        graph.closePath();
+        graph.clip();
+
+        graph.drawImage(img, circle.x-cellCurrent.radius, circle.y-cellCurrent.radius, cellCurrent.radius*2, cellCurrent.radius*2);
+  
+        graph.restore();
+        
         var nameCell = "";
         if(typeof(userCurrent.id) == "undefined")
             nameCell = player.name;
@@ -429,11 +444,11 @@ function drawPlayers(order) {
         graph.font = 'bold ' + fontSize + 'px sans-serif';
 
         if (global.toggleMassState === 0) {
-            graph.strokeText(nameCell, circle.x, circle.y);
-            graph.fillText(nameCell, circle.x, circle.y);
+            graph.strokeText(nameCell, circle.x, circle.y + cellCurrent.radius+13);
+            graph.fillText(nameCell, circle.x, circle.y+ cellCurrent.radius+13);
         } else {
-            graph.strokeText(nameCell, circle.x, circle.y);
-            graph.fillText(nameCell, circle.x, circle.y);
+            graph.strokeText(nameCell, circle.x, circle.y+ cellCurrent.radius+13);
+            graph.fillText(nameCell, circle.x, circle.y+ cellCurrent.radius+13);
             graph.font = 'bold ' + Math.max(fontSize / 3 * 2, 10) + 'px sans-serif';
             if(nameCell.length === 0) fontSize = 0;
             graph.strokeText(Math.round(cellCurrent.mass), circle.x, circle.y+fontSize);
